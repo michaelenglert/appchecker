@@ -1,0 +1,19 @@
+systemTenant: "system"
+
+systemTenantUser: "test"
+
+systemTenantPassword: "test"
+
+applicationId: 4
+
+#tenant: "customer1"
+
+tenantUser: "test"
+
+tenantPassword: "test"
+
+severity: "INFO"
+
+customeventtype: "NewApp"
+
+eventtype: "CUSTOM"
