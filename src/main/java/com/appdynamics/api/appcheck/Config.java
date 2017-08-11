@@ -1,5 +1,8 @@
 package com.appdynamics.api.appcheck;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Config {
     private String systemTenant;
     private String systemTenantUser;
@@ -11,19 +14,19 @@ public class Config {
     private String tenantPassword;
 
     private String severity;
-    private String customeventtype;
-    private String eventtype;
+    private String customeventType;
+    private String eventType;
 
     public String getSystemTenant() {
         return systemTenant;
     }
 
-    public String getCustomeventtype() {
-        return customeventtype;
+    public String getCustomeventType() {
+        return customeventType;
     }
 
-    public String getEventtype() {
-        return eventtype;
+    public String getEventType() {
+        return eventType;
     }
 
     public String getSeverity() {
@@ -58,12 +61,12 @@ public class Config {
         this.applicationId = applicationId;
     }
 
-    public void setCustomeventtype(String customeventtype) {
-        this.customeventtype = customeventtype;
+    public void setCustomeventType(String customeventType) {
+        this.customeventType = customeventType;
     }
 
-    public void setEventtype(String eventtype) {
-        this.eventtype = eventtype;
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
     public void setSeverity(String severity) {
