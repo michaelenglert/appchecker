@@ -1,16 +1,16 @@
 #systemTenant: "system"
 
-systemTenantUser: "test"
+systemTenantUser: "root"
 
-systemTenantPassword: "test"
+systemTenantPassword: "gc53ovIr44Tq"
 
 #applicationId: 4
 
 #tenant: "customer1"
 
-tenantUser: "test"
+tenantUser: "user"
 
-tenantPassword: "test"
+tenantPassword: "57vOfhGT5YV"
 
 severity: "INFO"
 
@@ -19,3 +19,7 @@ customeventType: "NewApp"
 eventType: "CUSTOM"
 
 test: "Test"
+
+appFile: "src/main/resources/apps.json"
+
+controller: "https://always.appd.duckdns.org:443"

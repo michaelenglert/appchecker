@@ -17,6 +17,9 @@ public class Config {
     private String customeventType;
     private String eventType;
 
+    private String appFile;
+    private String controller;
+
     public String getSystemTenant() {
         return systemTenant;
     }
@@ -57,6 +60,14 @@ public class Config {
         return tenantUser;
     }
 
+    public String getAppFile() {
+        return appFile;
+    }
+
+    public String getController() {
+        return controller;
+    }
+
     public void setApplicationId(int applicationId) {
         this.applicationId = applicationId;
     }
@@ -95,5 +106,13 @@ public class Config {
 
     public void setTenantUser(String tenantUser) {
         this.tenantUser = tenantUser;
+    }
+
+    public void setAppFile(String appFile) {
+        this.appFile = appFile;
+    }
+
+    public void setController(String controller) {
+        this.controller = controller;
     }
 }

@@ -10,7 +10,7 @@ public class ConfigReader {
 
     private Config config;
 
-    public void getConfig() {
+    public Config getConfig() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
             config = mapper.readValue(new File("src/main/resources/config.yml"), Config.class);
@@ -18,7 +18,7 @@ public class ConfigReader {
             e.getMessage();
         }
         checkConfig();
-        printConfig();
+        return config;
     }
 
     private void checkConfig() {
