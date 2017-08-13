@@ -50,16 +50,6 @@
     "id": 145
   },
     {
-    "name": "SeeYou",
-    "description": "",
-    "id": 147
-  },
-    {
-    "name": "AsyncTestSmu",
-    "description": "",
-    "id": 148
-  },
-    {
     "name": "EUM Test",
     "description": "",
     "id": 149
@@ -80,16 +70,6 @@
     "id": 160
   },
     {
-    "name": "eCommerce2",
-    "description": "",
-    "id": 163
-  },
-    {
-    "name": "ascasc",
-    "description": "",
-    "id": 164
-  },
-    {
     "name": "ErrorDetectionRule",
     "description": "",
     "id": 165
@@ -103,5 +83,10 @@
     "name": "GreenAccountDEV",
     "description": "",
     "id": 167
+  },
+    {
+    "name": "trst",
+    "description": "",
+    "id": 173
   }
 ]

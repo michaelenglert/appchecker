@@ -23,22 +23,48 @@ public class CheckApplications {
         apps = response.getEntity(String.class);
     }
 
-    private static void doCompare() throws IOException {
+    private static void checkFiles() throws IOException {
         if(fileOps.fileExists(config.getAppFile())){
-            if(apps.equals(fileOps.readFile())) {
-                System.out.println("Same same");
-            }
-            else {
-                List<Apps> appListOld;
-                List<Apps> appListNew;
-                ObjectMapper objectMapper = new ObjectMapper();
-                TypeReference<List<Apps>> mapType = new TypeReference<List<Apps>>() {};
-                appListNew = objectMapper.readValue(apps, mapType);
-                appListOld = objectMapper.readValue(fileOps.readFile(), mapType);
-            }
+            doSimpleCompare();
         }
         else {
             fileOps.writeFile(apps);
+        }
+    }
+
+    private static void doSimpleCompare() throws IOException {
+        if(apps.equals(fileOps.readFile())) {
+            System.out.println("Same same");
+        }
+        else {
+            doCompare();
+        }
+    }
+
+    private static void doCompare() throws IOException {
+        List<Apps> appListRest;
+        List<Apps> appListFile;
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<List<Apps>> mapType = new TypeReference<List<Apps>>() {};
+        appListRest = objectMapper.readValue(apps, mapType);
+        appListFile = objectMapper.readValue(fileOps.readFile(), mapType);
+
+        if(appListRest.size() >= appListFile.size()){
+            System.out.println("Stuff added");
+            int i = 0;
+            while (i < appListRest.size()) {
+                if (appListFile.size() <= i){
+                    System.out.println("Add: " + appListRest.get(i).getName());
+                }
+                else if(appListFile.get(i).getId() == appListRest.get(i).getId() ||
+                        !appListFile.get(i).getName().equals(appListRest.get(i).getName())){
+                    System.out.println("Changed: " + appListRest.get(i).getName());
+                }
+                i++;
+            }
+        }
+        else {
+            System.out.println("Stuff removed");
         }
     }
 
@@ -46,7 +72,7 @@ public class CheckApplications {
     {
         try {
             getApplications();
-            doCompare();
+            checkFiles();
         } catch (Exception e) {
             e.printStackTrace();
         }

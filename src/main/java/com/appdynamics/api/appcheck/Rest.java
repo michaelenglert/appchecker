@@ -11,7 +11,7 @@ public class Rest {
         String auth = user + "@" + account + ":" + password;
         String encodedAuth = new String(Base64.encodeBase64(auth.getBytes()));
 
-        ClientResponse response =   getWebResource(url).header("Authorization", "Basic " + encodedAuth).get(ClientResponse.class);
+        ClientResponse response = getWebResource(url).header("Authorization", "Basic " + encodedAuth).get(ClientResponse.class);
 
         if (response.getStatus() != 200) {
             throw new RuntimeException("Error Code: " + response.getStatus());
