@@ -44,17 +44,4 @@ class ConfigReader {
             config.setApplicationId(Globals.applicationId);
         }
     }
-
-    private void printConfig() {
-        System.out.println(config.getApplicationId());
-        System.out.println(config.getCustomeventType());
-        System.out.println(config.getEventType());
-        System.out.println(config.getSeverity());
-        System.out.println(config.getSystemTenant());
-        System.out.println(config.getSystemTenantPassword());
-        System.out.println(config.getSystemTenantUser());
-        System.out.println(config.getTenant());
-        System.out.println(config.getTenantUser());
-        System.out.println(config.getTenantPassword());
-    }
 }
