@@ -7,11 +7,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class CheckApplications {
+class CheckApplications {
 
-    private static ConfigReader configReader = new ConfigReader();
-    private static Config config = configReader.getConfig();
-    private static FileOperations fileOps = new FileOperations();
+    private static final ConfigReader configReader = new ConfigReader();
+    private static final Config config = configReader.getConfig();
+    private static final FileOperations fileOps = new FileOperations();
     private static String apps;
 
     private static void getApplications () throws Exception {
@@ -56,7 +56,7 @@ public class CheckApplications {
                 if (appListFile.size() <= i){
                     System.out.println("Add: " + appListRest.get(i).getName());
                 }
-                else if(appListFile.get(i).getId() == appListRest.get(i).getId() ||
+                else if(appListFile.get(i).getId().equals(appListRest.get(i).getId()) &&
                         !appListFile.get(i).getName().equals(appListRest.get(i).getName())){
                     System.out.println("Changed: " + appListRest.get(i).getName());
                 }

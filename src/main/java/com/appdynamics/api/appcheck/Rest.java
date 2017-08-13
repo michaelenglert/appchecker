@@ -6,7 +6,7 @@ import com.sun.jersey.api.client.WebResource;
 import org.apache.commons.codec.binary.Base64;
 
 
-public class Rest {
+class Rest {
     static ClientResponse doGet(String user, String account, String password, String url) throws Exception{
         String auth = user + "@" + account + ":" + password;
         String encodedAuth = new String(Base64.encodeBase64(auth.getBytes()));
@@ -20,8 +20,8 @@ public class Rest {
         return response;
     }
 
-    static void doPost(String user, String account, String password, String url) throws Exception{
-
+    static void doPost(String user, String account, String password, String url) {
+        //Include stuff
     }
 
     private static WebResource getWebResource(String url) throws Exception{

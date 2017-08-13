@@ -1,11 +1,11 @@
 package com.appdynamics.api.appcheck;
 
-public class Globals {
-    public static String systemTenant = "system";
-    public static String systemTenantUser = "root";
-    public static int applicationId = 4;
-    public static String tenant = "customer1";
-    public static String severity = "INFO";
-    public static String customeventType = "New_Application";
-    public static String eventType = "CUSTOM";
+class Globals {
+    public static final String systemTenant = "system";
+    public static final String systemTenantUser = "root";
+    public static final int applicationId = 4;
+    public static final String tenant = "customer1";
+    public static final String severity = "INFO";
+    public static final String customeventType = "New_Application";
+    public static final String eventType = "CUSTOM";
 }

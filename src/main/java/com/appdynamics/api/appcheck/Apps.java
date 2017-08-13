@@ -1,9 +1,9 @@
 package com.appdynamics.api.appcheck;
 
-public class Apps {
-    public String description;
-    public String id;
-    public String name;
+class Apps {
+    private String description;
+    private String id;
+    private String name;
 
     public Apps() {
     }
