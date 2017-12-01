@@ -1,4 +1,7 @@
 package com.appdynamics.api.appcheck;
 
-class ConfigTest {
+class ConfigReaderTest {
+    static void getConfigTest (){
+
+    }
 }
