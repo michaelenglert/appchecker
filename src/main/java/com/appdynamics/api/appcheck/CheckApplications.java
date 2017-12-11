@@ -1,76 +1,93 @@
 package com.appdynamics.api.appcheck;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
+import com.google.common.collect.Maps;
+import com.google.common.collect.SortedMapDifference;
 
 import java.io.IOException;
-import java.util.List;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
 
+@SuppressWarnings("SpellCheckingInspection")
 class CheckApplications {
 
-    private static final ConfigReader configReader = new ConfigReader();
-    private static final Config config = configReader.getConfig();
+    private static Config config;
     private static final FileOperations fileOps = new FileOperations();
-    private static String apps;
+    private static String appsCurrent;
 
     private static void getApplications () throws Exception {
-        ClientResponse response;
-
-        response = Rest.doGet(config.getTenantUser(), config.getTenant(), config.getTenantPassword(),
-                config.getController() + "/controller/rest/applications?output=JSON");
-
-        apps = response.getEntity(String.class);
+        appsCurrent = Rest.doGet(config.getTenantUser(), config.getTenant(), config.getTenantPassword(),
+                new URL(config.getController() + Globals.controllerGetApps));
     }
 
-    private static void checkFiles() throws IOException {
-        if(fileOps.fileExists(config.getAppFile())){
-            doSimpleCompare();
-        }
-        else {
-            fileOps.writeFile(apps);
-        }
-    }
-
-    private static void doSimpleCompare() throws IOException {
-        if(apps.equals(fileOps.readFile())) {
-            System.out.println("Same same");
-        }
-        else {
-            doCompare();
-        }
-    }
-
-    private static void doCompare() throws IOException {
-        List<Apps> appListRest;
-        List<Apps> appListFile;
+    private static TreeMap<Integer, String> getMap (String apps) {
+        App[] appArr = null;
         ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<List<Apps>> mapType = new TypeReference<List<Apps>>() {};
-        appListRest = objectMapper.readValue(apps, mapType);
-        appListFile = objectMapper.readValue(fileOps.readFile(), mapType);
+        try {
+            appArr = objectMapper.readValue(apps, App[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        TreeMap<Integer, String> appMap = new TreeMap<Integer, String>();
+        for (App app:appArr){
+            appMap.put(app.getId(),app.getName());
+        }
+        return appMap;
+    }
 
-        if(appListRest.size() >= appListFile.size()){
-            System.out.println("Stuff added");
-            int i = 0;
-            while (i < appListRest.size()) {
-                if (appListFile.size() <= i){
-                    System.out.println("Add: " + appListRest.get(i).getName());
-                }
-                else if(appListFile.get(i).getId().equals(appListRest.get(i).getId()) &&
-                        !appListFile.get(i).getName().equals(appListRest.get(i).getName())){
-                    System.out.println("Changed: " + appListRest.get(i).getName());
-                }
-                i++;
-            }
+    private static void checkFiles() throws Exception {
+        if(fileOps.fileExists(config.getAppFile())){
+            doCompare();
+            fileOps.writeFile(appsCurrent);
         }
         else {
-            System.out.println("Stuff removed");
+            fileOps.writeFile(appsCurrent);
+        }
+    }
+
+    private static void doCompare() throws Exception {
+        TreeMap<Integer, String> appMapCurrent = getMap(appsCurrent);
+        TreeMap<Integer, String> appMapBefore = getMap(fileOps.readFile());
+        SortedMapDifference<Integer,String> diff = Maps.difference(appMapBefore,appMapCurrent);
+
+        SortedMap changes = diff.entriesDiffering();
+        SortedMap deleted = diff.entriesOnlyOnLeft();
+        SortedMap added = diff.entriesOnlyOnRight();
+
+        String message;
+
+        URL url = new URL(config.getController() +
+                "/controller/rest/applications/" + config.getApplicationId() +
+                "/events?" +
+                "severity=" + URLEncoder.encode(config.getSeverity(), Globals.urlEncoding) +
+                "&eventtype=" + URLEncoder.encode(config.getEventType(), Globals.urlEncoding) +
+                "&customeventtype=" + URLEncoder.encode(config.getCustomeventType(), Globals.urlEncoding));
+
+        if (!changes.isEmpty()) {
+            message = String.format("Changed: " + changes.toString());
+            Rest.doPost(config.getSystemTenantUser(), config.getSystemTenant(), config.getSystemTenantPassword(),
+                    new URL(url + "&summary=" + URLEncoder.encode(message, Globals.urlEncoding)));
+        }
+
+        if (!deleted.isEmpty()) {
+            message = String.format("Deleted: " + deleted.toString());
+            Rest.doPost(config.getSystemTenantUser(), config.getSystemTenant(), config.getSystemTenantPassword(),
+                    new URL(url + "&summary=" + URLEncoder.encode(message, Globals.urlEncoding)));
+        }
+
+        if (!added.isEmpty()) {
+            message = String.format("Added: " + added.toString());
+            Rest.doPost(config.getSystemTenantUser(), config.getSystemTenant(), config.getSystemTenantPassword(),
+                    new URL(url + "&summary=" + URLEncoder.encode(message, Globals.urlEncoding)));
         }
     }
 
     public static void main(String[] args)
     {
         try {
+            ConfigReader configReader = new ConfigReader();
+            config = configReader.getConfig(args[0]);
             getApplications();
             checkFiles();
         } catch (Exception e) {

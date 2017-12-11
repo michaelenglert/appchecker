@@ -2,6 +2,7 @@ package com.appdynamics.api.appcheck;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Config {
     private String systemTenant;

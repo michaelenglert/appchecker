@@ -10,10 +10,10 @@ class ConfigReader {
 
     private Config config;
 
-    public Config getConfig() {
+    public Config getConfig(String configFile) {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
-            config = mapper.readValue(new File("src/main/resources/config.yml"), Config.class);
+            config = mapper.readValue(new File(configFile), Config.class);
         } catch (IOException e) {
             e.getMessage();
         }

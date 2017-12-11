@@ -8,4 +8,6 @@ class Globals {
     public static final String severity = "INFO";
     public static final String customeventType = "New_Application";
     public static final String eventType = "CUSTOM";
+    public static final String controllerGetApps = "/controller/rest/applications?output=JSON";
+    public static final String urlEncoding = "UTF-8";
 }
