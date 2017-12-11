@@ -29,7 +29,8 @@ class CheckApplications {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TreeMap<Integer, String> appMap = new TreeMap<Integer, String>();
+        TreeMap<Integer, String> appMap = new TreeMap<>();
+        assert appArr != null;
         for (App app:appArr){
             appMap.put(app.getId(),app.getName());
         }
@@ -65,19 +66,19 @@ class CheckApplications {
                 "&customeventtype=" + URLEncoder.encode(config.getCustomeventType(), Globals.urlEncoding));
 
         if (!changes.isEmpty()) {
-            message = String.format("Changed: " + changes.toString());
+            message = "Changed: " + changes.toString();
             Rest.doPost(config.getSystemTenantUser(), config.getSystemTenant(), config.getSystemTenantPassword(),
                     new URL(url + "&summary=" + URLEncoder.encode(message, Globals.urlEncoding)));
         }
 
         if (!deleted.isEmpty()) {
-            message = String.format("Deleted: " + deleted.toString());
+            message = "Deleted: " + deleted.toString();
             Rest.doPost(config.getSystemTenantUser(), config.getSystemTenant(), config.getSystemTenantPassword(),
                     new URL(url + "&summary=" + URLEncoder.encode(message, Globals.urlEncoding)));
         }
 
         if (!added.isEmpty()) {
-            message = String.format("Added: " + added.toString());
+            message = "Added: " + added.toString();
             Rest.doPost(config.getSystemTenantUser(), config.getSystemTenant(), config.getSystemTenantPassword(),
                     new URL(url + "&summary=" + URLEncoder.encode(message, Globals.urlEncoding)));
         }
